@@ -47,7 +47,6 @@ app.post('/users', (req, res) => {
 
    user.save().then( () => {
        console.log("Usao u blok");
-     user.testMethod();
      return user.generateAuthToken();
     
    }).then( (token) => {

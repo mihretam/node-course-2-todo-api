@@ -12,8 +12,8 @@ var UserSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     validate: {
-        validator: validator.isEmail,            
-        message: '{VALUE} is not a valid mail!' 
+        validator: validator.isEmail,
+        message: '{VALUE} is not a valid mail!'
     }},
     password: {
     type: String,
@@ -33,35 +33,32 @@ var UserSchema = new mongoose.Schema({
 
 });
 
-var User = mongoose.model('User', UserSchema);
 
 UserSchema.methods.generateAuthToken = function () {
-  console.log("uso");
-  
+
   var user = this;
   var access = 'auth';
   var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
 
   console.log('token', token);
-  
-  user.tokens = user.tokens.concat([{access, token}]);
-  
-  console.log(user.tokens[0]);
-  
-  return user.save().then( () => {
-    
-    return token;
-  }); 
-};
 
-UserSchema.methods.testMethod = function () {
-  console.log("test fja");
-};
-module.exports = {User, UserSchema};
+  user.tokens = user.tokens.concat([{access, token}]);
+
+  return user.save().then( () => {
+    return token;
+  })
+}
+
+
+
+var User = mongoose.model('User', UserSchema);
+
+
+module.exports = {User};
 
 // validate: {
 //     validator: (value) => {
 //     return validator.isEmail(value);
 //     },
-//     message: `${value} is not a valid mail!` 
-// } another way 
+//     message: `${value} is not a valid mail!`
+// } another way
